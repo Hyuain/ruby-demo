@@ -1,0 +1,21 @@
+<h1>
+  Hello
+</h1>
+<div>
+  <% a = 5 %>
+  <% if a > 10 %>
+    大
+  <% else %>
+    小
+  <% end %>
+</div>
+<div>
+  <%= a * 10 %>
+</div>
+<div>
+  <%= @xxx %>
+</div>
+
+<% content_for :footer do %>
+  页脚内容
+<% end %>
