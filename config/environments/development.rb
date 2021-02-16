@@ -37,7 +37,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   # 需要报错
-  config.action_mailer.raise_deliver_errors = true
+  config.action_mailer.raise_delivery_errors = true
   # 无需缓存
   config.action_mailer.perform_caching = false
   config.action_mailer.smtp_settings = {
@@ -47,7 +47,8 @@ Rails.application.configure do
     user_name: ENV['smtp_username'],
     password: ENV['smtp_password'],
     authentication: ENV['smtp_authentication'],
-    enable_starttls_auto: ENV['smtp_enable_starttls_auto']
+    enable_starttls_auto: ENV['smtp_enable_starttls_auto'],
+    ssl: ENV['smtp_ssl'],
   }
   config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
 
