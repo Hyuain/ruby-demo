@@ -20,7 +20,7 @@ require "rails/test_unit/railtie"
 Bundler.require(*Rails.groups)
 Dotenv::Railtie.load
 
-module MorneyRails1
+module RailsDemo
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
@@ -37,5 +37,8 @@ module MorneyRails1
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.session_store :cookie_store, key: 'rails_demo_session_id'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end
