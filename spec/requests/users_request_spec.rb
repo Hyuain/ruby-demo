@@ -15,9 +15,9 @@ RSpec.describe 'Users', type: :request do
     expect(response.body.blank?).to be true
   end
   it '可以获得当前用户' do
-    user = User.create email: '123@qq.com', password: '123456', password_confirmation: '123456'
-    sign_in user.email, '123456'
+    user = sign_in
     get '/me'
+    p body
     body = JSON.parse(response.body)
     expect(response).to have_http_status :ok
     expect(body['resource']['id']).to eq user.id
