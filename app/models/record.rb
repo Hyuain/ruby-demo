@@ -1,5 +1,8 @@
 class Record < ApplicationRecord
   paginates_per 10
+
+  belongs_to :user
+
   has_many :taggings
   has_many :tags, through: :taggings
 

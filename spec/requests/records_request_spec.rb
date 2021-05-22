@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Record', type: :request do
+  before :each do
+    @user = User.create email: '1@qq.com', password: '123456', password_confirmation: '123456'
+  end
   context "Create" do
     it '未登录不能创建 record' do
       post '/records', params: { amount: 10000, category: 'outgoings', notes: '吃饭' }
@@ -16,13 +19,13 @@ RSpec.describe 'Record', type: :request do
   end
   context "Destroy" do
     it '未登录不能删除 record ' do
-      record = Record.create amount: 100000, category: 'income'
+      record = Record.create amount: 100000, category: 'income', user: @user
       delete "/records/#{record.id}"
       expect(response.status).to eq 401
     end
     it '删除一个 record' do
       sign_in
-      record = Record.create amount: 100000, category: 'income'
+      record = Record.create amount: 100000, category: 'income', user: @user
       delete "/records/#{record.id}"
       expect(response.status).to eq 200
     end
@@ -35,7 +38,7 @@ RSpec.describe 'Record', type: :request do
     it '获取 record' do
       sign_in
       (1..11).to_a.each do
-        Record.create amount: 100000, category: 'income'
+        Record.create amount: 100000, category: 'income', user: @user
       end
       get '/records'
       expect(response.status).to eq 200
@@ -45,13 +48,13 @@ RSpec.describe 'Record', type: :request do
   end
   context 'Show' do
     it '未登录不能获取 record' do
-      record = Record.create amount: 10000, category: 'income'
+      record = Record.create amount: 10000, category: 'income', user: @user
       get "/records/#{record.id}"
       expect(response.status).to eq 401
     end
     it '可以获取 record' do
       sign_in
-      record = Record.create amount: 10000, category: 'income'
+      record = Record.create amount: 10000, category: 'income', user: @user
       get "/records/#{record.id}"
       expect(response.status).to eq 200
     end
@@ -63,13 +66,13 @@ RSpec.describe 'Record', type: :request do
   end
   context 'Update' do
     it '未登录不能修改 record' do
-      record = Record.create amount: 10000, category: 'income'
+      record = Record.create amount: 10000, category: 'income', user: @user
       patch "/records/#{record.id}", params: { amount: 9999, category: 'outgoings' }
       expect(response.status).to eq 401
     end
     it '可以修改 record' do
       sign_in
-      record = Record.create amount: 10000, category: 'income'
+      record = Record.create amount: 10000, category: 'income', user: @user
       patch "/records/#{record.id}", params: { amount: 9999, category: 'outgoings' }
       expect(response.status).to eq 200
       new_record = (JSON.parse response.body)['resource']

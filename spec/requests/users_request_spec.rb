@@ -17,7 +17,6 @@ RSpec.describe 'Users', type: :request do
   it '可以获得当前用户' do
     user = sign_in
     get '/me'
-    p body
     body = JSON.parse(response.body)
     expect(response).to have_http_status :ok
     expect(body['resource']['id']).to eq user.id
