@@ -45,16 +45,21 @@ RSpec.describe 'Record', type: :request do
     end
   end
   context 'Show' do
-    it '未登录不能获取 records' do
+    it '未登录不能获取 record' do
       record = Record.create amount: 10000, category: 'income'
       get "/records/#{record.id}"
       expect(response.status).to eq 401
     end
-    it '可以获取 records' do
+    it '可以获取 record' do
       sign_in
       record = Record.create amount: 10000, category: 'income'
       get "/records/#{record.id}"
       expect(response.status).to eq 200
+    end
+    it '不能获取不存在的 record' do
+      sign_in
+      get '/records/99999'
+      expect(response.status).to eq 404
     end
   end
 end
