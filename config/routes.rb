@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   resources :users
   resources :records
   resources :sessions, only: %i[create]
+  resources :tags
 end
