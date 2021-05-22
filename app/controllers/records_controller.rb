@@ -6,7 +6,13 @@ class RecordsController < ApplicationController
   end
 
   def show
-    render_resources Record.find(params[:id])
+    render_resource Record.find(params[:id])
+  end
+
+  def update
+    record = Record.find(params[:id])
+    record.update create_params
+    render_resource record
   end
 
   def create
@@ -19,7 +25,7 @@ class RecordsController < ApplicationController
   end
 
   def render_resources(resources)
-    render json: {resources: resources}
+    render json: { resources: resources }, status: 200
   end
 
   private

@@ -40,7 +40,6 @@ RSpec.describe 'Record', type: :request do
       get '/records'
       expect(response.status).to eq 200
       body = JSON.parse response.body
-      p body['resources'].length
       expect(body['resources'].length).to eq 10
     end
   end
@@ -60,6 +59,22 @@ RSpec.describe 'Record', type: :request do
       sign_in
       get '/records/99999'
       expect(response.status).to eq 404
+    end
+  end
+  context 'Update' do
+    it '未登录不能修改 record' do
+      record = Record.create amount: 10000, category: 'income'
+      patch "/records/#{record.id}", params: { amount: 9999, category: 'outgoings' }
+      expect(response.status).to eq 401
+    end
+    it '可以修改 record' do
+      sign_in
+      record = Record.create amount: 10000, category: 'income'
+      patch "/records/#{record.id}", params: { amount: 9999, category: 'outgoings' }
+      expect(response.status).to eq 200
+      new_record = (JSON.parse response.body)['resource']
+      expect(new_record['amount']).to eq 9999
+      expect(new_record['category']).to eq 'outgoings'
     end
   end
 end
