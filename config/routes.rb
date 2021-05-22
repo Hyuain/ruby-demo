@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   resources :records
   resources :sessions, only: %i[create]
   resources :tags
-  resources :taggings
+  resources :taggings, except: [:update]
 end
